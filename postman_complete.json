@@ -1,0 +1,2394 @@
+{
+  "info": {
+    "name": "Empedia API Complete Collection",
+    "description": "Complete API collection for Empedia platform including authentication, user management, jobs, bookings, courses, mentor applications, achievements, badges, certifications, education, experience, and admin operations",
+    "version": "2.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "jobId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bookingId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "mentorApplicationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "achievementId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "badgeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "certificationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "educationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "experienceId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "jobApplicationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courseCreationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "moduleId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "lessonId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/send-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "send-otp"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "verify-otp"]
+            },
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 200) {",
+                    "    const response = pm.response.json();",
+                    "    if (response.data && response.data.accessToken) {",
+                    "        pm.collectionVariables.set('authToken', response.data.accessToken);",
+                    "        pm.collectionVariables.set('userId', response.data.user._id);",
+                    "    }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"your_refresh_token_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh-token"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"email\": \"updated@example.com\",\n  \"skills\": [\"JavaScript\", \"Node.js\", \"React\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"+919876543210\",\n  \"roles\": [\"user\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"email\": \"john.updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Get All Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs?page=1&limit=10&status=active",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Job Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Get Urgent Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/urgent",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "urgent"]
+            }
+          }
+        },
+        {
+          "name": "Get Job by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Software Engineer\",\n  \"description\": \"We are looking for a senior software engineer...\",\n  \"company\": \"Tech Corp\",\n  \"location\": \"San Francisco, CA\",\n  \"type\": \"full-time\",\n  \"salary\": {\n    \"min\": 120000,\n    \"max\": 180000,\n    \"currency\": \"USD\"\n  },\n  \"requirements\": [\"5+ years experience\", \"JavaScript\", \"Node.js\"],\n  \"skills\": [\"JavaScript\", \"Node.js\", \"React\", \"MongoDB\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs"]
+            }
+          }
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Software Engineer - Updated\",\n  \"description\": \"Updated job description...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Job",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Activate Job",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/activate",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "activate"]
+            }
+          }
+        },
+        {
+          "name": "Pause Job",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/pause",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "pause"]
+            }
+          }
+        },
+        {
+          "name": "Close Job",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/close",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "close"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Bookmark",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/bookmark",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "bookmark"]
+            }
+          }
+        },
+        {
+          "name": "Apply for Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/apply",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "apply"]
+            }
+          }
+        },
+        {
+          "name": "Get Bookmarked Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/user/bookmarked",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "user", "bookmarked"]
+            }
+          }
+        },
+        {
+          "name": "Get Applied Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/user/applied",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "user", "applied"]
+            }
+          }
+        },
+        {
+          "name": "Get My Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/user/posted",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "user", "posted"]
+            }
+          }
+        },
+        {
+          "name": "Get Recommended Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/user/recommended",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "user", "recommended"]
+            }
+          }
+        },
+        {
+          "name": "Get Pending Jobs (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/admin/pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "admin", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Approve Job (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Reject Job (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "reject"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Job Applications",
+      "item": [
+        {
+          "name": "Get All Job Applications (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications"]
+            }
+          }
+        },
+        {
+          "name": "Create Job Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobId\": \"{{jobId}}\",\n  \"coverLetter\": \"I am very interested in this position...\",\n  \"resume\": \"https://example.com/resume.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/job-applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications"]
+            }
+          }
+        },
+        {
+          "name": "Get Job Applications for Job",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/job/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "job", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get User Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "user", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get My Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/my-applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "my-applications"]
+            }
+          }
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"interview\",\n  \"notes\": \"Candidate looks promising\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/{{jobApplicationId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "{{jobApplicationId}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Schedule Interview",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interviewDate\": \"2024-02-15T10:00:00Z\",\n  \"interviewType\": \"video\",\n  \"interviewLink\": \"https://meet.google.com/abc-def-ghi\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/{{jobApplicationId}}/schedule-interview",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "{{jobApplicationId}}", "schedule-interview"]
+            }
+          }
+        },
+        {
+          "name": "Withdraw Application",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/{{jobApplicationId}}/withdraw",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "{{jobApplicationId}}", "withdraw"]
+            }
+          }
+        },
+        {
+          "name": "Get Application Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/stats/overview",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "stats", "overview"]
+            }
+          }
+        },
+        {
+          "name": "Get Pending Applications (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/admin/pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "admin", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Get Upcoming Interviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/interviews/upcoming",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "interviews", "upcoming"]
+            }
+          }
+        },
+        {
+          "name": "Get Job Application by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/{{jobApplicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "{{jobApplicationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Job Application",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"coverLetter\": \"Updated cover letter...\",\n  \"resume\": \"https://example.com/updated-resume.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/{{jobApplicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "{{jobApplicationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Job Application",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/{{jobApplicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "{{jobApplicationId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Get All Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings?page=1&limit=10&status=confirmed",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "confirmed"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Booking Enums",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/enums",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "enums"]
+            }
+          }
+        },
+        {
+          "name": "Get Booking Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/statistics",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "statistics"]
+            }
+          }
+        },
+        {
+          "name": "Get Booking by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mentorId\": \"mentor_user_id_here\",\n  \"sessionId\": \"session_id_here\",\n  \"sessionType\": \"1:1 Video Call\",\n  \"duration\": \"60min\",\n  \"date\": \"2024-02-15\",\n  \"time\": \"14:00\",\n  \"mentorName\": \"John Mentor\",\n  \"mentorPosition\": \"Senior Software Engineer\",\n  \"mentorImage\": \"https://example.com/mentor.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings"]
+            }
+          }
+        },
+        {
+          "name": "Update Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-02-16\",\n  \"time\": \"15:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Booking",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Bookings by Mentor",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/mentor/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "mentor", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Bookings by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "user", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Available Time Slots",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/mentor/{{userId}}/available/2024-02-15",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "mentor", "{{userId}}", "available", "2024-02-15"]
+            }
+          }
+        },
+        {
+          "name": "Confirm Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/confirm",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}", "confirm"]
+            }
+          }
+        },
+        {
+          "name": "Complete Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}", "complete"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cancellationReason\": \"Schedule conflict\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Reschedule Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newDate\": \"2024-02-20\",\n  \"newTime\": \"16:00\",\n  \"reason\": \"Schedule conflict\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/reschedule",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}", "reschedule"]
+            }
+          }
+        },
+        {
+          "name": "Add Rating",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"feedback\": \"Excellent session, very helpful!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/rating",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}", "rating"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mentor Applications",
+      "item": [
+        {
+          "name": "Get All Mentor Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications?page=1&limit=10&status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "pending"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Application Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/statistics",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "statistics"]
+            }
+          }
+        },
+        {
+          "name": "Get Application Enums",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/enums",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "enums"]
+            }
+          }
+        },
+        {
+          "name": "Get Applications by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "user", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Application by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/{{mentorApplicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "{{mentorApplicationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Mentor Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expertise\": [\"JavaScript\", \"Node.js\", \"React\"],\n  \"experience\": \"5+ years in software development\",\n  \"motivation\": \"I want to help others learn programming\",\n  \"availability\": \"Weekends and evenings\",\n  \"linkedinProfile\": \"https://linkedin.com/in/johndoe\",\n  \"portfolioUrl\": \"https://johndoe.dev\",\n  \"resume\": \"https://example.com/resume.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications"]
+            }
+          }
+        },
+        {
+          "name": "Update Mentor Application",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expertise\": [\"JavaScript\", \"Node.js\", \"React\", \"TypeScript\"],\n  \"experience\": \"6+ years in software development\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/{{mentorApplicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "{{mentorApplicationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Approve Application",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reviewNotes\": \"Excellent qualifications and experience\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/{{mentorApplicationId}}/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "{{mentorApplicationId}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Reject Application",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reviewNotes\": \"Insufficient experience for mentor role\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/{{mentorApplicationId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "{{mentorApplicationId}}", "reject"]
+            }
+          }
+        },
+        {
+          "name": "Waitlist Application",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reviewNotes\": \"Good candidate, but we have enough mentors in this area currently\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/{{mentorApplicationId}}/waitlist",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "{{mentorApplicationId}}", "waitlist"]
+            }
+          }
+        },
+        {
+          "name": "Mark Under Review",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reviewNotes\": \"Application is being reviewed by the team\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mentor-applications/{{mentorApplicationId}}/under-review",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "{{mentorApplicationId}}", "under-review"]
+            }
+          }
+        },
+        {
+          "name": "Delete Application",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+            
+              "raw": "{{baseUrl}}/mentor-applications/{{mentorApplicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mentor-applications", "{{mentorApplicationId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"+919876543210\",\n  \"role\": \"user\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\",\n  \"email\": \"john.updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@empedia.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "login"]
+            },
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 200) {",
+                    "    const response = pm.response.json();",
+                    "    if (response.data && response.data.accessToken) {",
+                    "        pm.collectionVariables.set('adminToken', response.data.accessToken);",
+                    "    }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Get All Users (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "users"]
+            }
+          }
+        },
+        {
+          "name": "Update User Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"mentor\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{userId}}/role",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "users", "{{userId}}", "role"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "Get All Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            }
+          }
+        },
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"JavaScript Fundamentals\",\n  \"description\": \"Learn the basics of JavaScript\",\n  \"category\": \"Programming\",\n  \"level\": \"Beginner\",\n  \"price\": 99.99,\n  \"duration\": \"4 weeks\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses"]
+            }
+          }
+        },
+        {
+          "name": "Get Course by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Enroll in Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/enroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "enroll"]
+            }
+          }
+        },
+        {
+          "name": "Update Course Progress",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"progress\": 75\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/{{courseId}}/progress",
+              "host": ["{{baseUrl}}"],
+              "path": ["courses", "{{courseId}}", "progress"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Job Applications",
+      "item": [
+        {
+          "name": "Get All Job Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications"]
+            }
+          }
+        },
+        {
+          "name": "Create Job Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobId\": \"{{jobId}}\",\n  \"coverLetter\": \"I am interested in this position...\",\n  \"resume\": \"https://example.com/resume.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/job-applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications"]
+            }
+          }
+        },
+        {
+          "name": "Get Applications by Job",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/job/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "job", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"shortlisted\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/job-applications/{{applicationId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["job-applications", "{{applicationId}}", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Achievements",
+      "item": [
+        {
+          "name": "Get All Achievements",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/achievements",
+              "host": ["{{baseUrl}}"],
+              "path": ["achievements"]
+            }
+          }
+        },
+        {
+          "name": "Create Achievement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Course Completion\",\n  \"description\": \"Completed JavaScript Fundamentals course\",\n  \"type\": \"course_completion\",\n  \"points\": 100\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/achievements",
+              "host": ["{{baseUrl}}"],
+              "path": ["achievements"]
+            }
+          }
+        },
+        {
+          "name": "Get User Achievements",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/achievements/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["achievements", "user", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Badges",
+      "item": [
+        {
+          "name": "Get All Badges",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/badges",
+              "host": ["{{baseUrl}}"],
+              "path": ["badges"]
+            }
+          }
+        },
+        {
+          "name": "Create Badge",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"JavaScript Expert\",\n  \"description\": \"Mastered JavaScript fundamentals\",\n  \"category\": \"Programming\",\n  \"icon\": \"https://example.com/js-badge.png\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/badges",
+              "host": ["{{baseUrl}}"],
+              "path": ["badges"]
+            }
+          }
+        },
+        {
+          "name": "Get User Badges",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/badges/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["badges", "user", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Mark Badge as Earned",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/badges/{{badgeId}}/earn",
+              "host": ["{{baseUrl}}"],
+              "path": ["badges", "{{badgeId}}", "earn"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Certifications",
+      "item": [
+        {
+          "name": "Get All Certifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/certifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["certifications"]
+            }
+          }
+        },
+        {
+          "name": "Create Certification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AWS Certified Developer\",\n  \"issuingOrganization\": \"Amazon Web Services\",\n  \"issueDate\": \"2024-01-15\",\n  \"expirationDate\": \"2027-01-15\",\n  \"credentialId\": \"AWS-123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/certifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["certifications"]
+            }
+          }
+        },
+        {
+          "name": "Get User Certifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/certifications/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["certifications", "user", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Education",
+      "item": [
+        {
+          "name": "Get All Education",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/education",
+              "host": ["{{baseUrl}}"],
+              "path": ["education"]
+            }
+          }
+        },
+        {
+          "name": "Create Education",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"institution\": \"University of Technology\",\n  \"degree\": \"Bachelor of Computer Science\",\n  \"fieldOfStudy\": \"Computer Science\",\n  \"startDate\": \"2018-09-01\",\n  \"endDate\": \"2022-06-30\",\n  \"grade\": \"3.8 GPA\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/education",
+              "host": ["{{baseUrl}}"],
+              "path": ["education"]
+            }
+          }
+        },
+        {
+          "name": "Get User Education",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/education/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["education", "user", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Experience",
+      "item": [
+        {
+          "name": "Get All Experience",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/experience",
+              "host": ["{{baseUrl}}"],
+              "path": ["experience"]
+            }
+          }
+        },
+        {
+          "name": "Create Experience",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company\": \"Tech Solutions Inc\",\n  \"position\": \"Software Developer\",\n  \"startDate\": \"2022-07-01\",\n  \"endDate\": \"2024-01-31\",\n  \"description\": \"Developed web applications using React and Node.js\",\n  \"location\": \"San Francisco, CA\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/experience",
+              "host": ["{{baseUrl}}"],
+              "path": ["experience"]
+            }
+          }
+        },
+        {
+          "name": "Get User Experience",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/experience/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["experience", "user", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Course Creation",
+      "item": [
+        {
+          "name": "Get All Course Creations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/course-creation",
+              "host": ["{{baseUrl}}"],
+              "path": ["course-creation"]
+            }
+          }
+        },
+        {
+          "name": "Create Course Creation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Advanced React Patterns\",\n  \"description\": \"Learn advanced React patterns and best practices\",\n  \"category\": \"Programming\",\n  \"level\": \"Advanced\",\n  \"estimatedDuration\": \"8 weeks\",\n  \"targetAudience\": \"Experienced React developers\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/course-creation",
+              "host": ["{{baseUrl}}"],
+              "path": ["course-creation"]
+            }
+          }
+        },
+        {
+          "name": "Submit for Review",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/course-creation/{{courseCreationId}}/submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["course-creation", "{{courseCreationId}}", "submit"]
+            }
+          }
+        },
+        {
+          "name": "Review and Publish (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approve\",\n  \"reviewNotes\": \"Excellent course content\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/course-creation/{{courseCreationId}}/review",
+              "host": ["{{baseUrl}}"],
+              "path": ["course-creation", "{{courseCreationId}}", "review"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
